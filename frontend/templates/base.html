@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Gestão de Frotas{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-marca">Gestão de Frotas</div>
+            <nav class="menu">
+                <a href="{% url 'inicio' %}" class="menu-item">Painel</a>
+                <a href="{% url 'veiculo_lista' %}" class="menu-item">Veículos</a>
+                <a href="#" class="menu-item desativado">Motoristas</a>
+                <a href="#" class="menu-item desativado">Vínculos</a>
+                <a href="#" class="menu-item desativado">Manutenções</a>
+                <a href="#" class="menu-item desativado">Relatório</a>
+            </nav>
+        </aside>
+
+        <div class="conteudo-principal">
+            <header class="topo">
+                <h1>{% block page_title %}Gestão de Frotas{% endblock %}</h1>
+            </header>
+
+            <main class="conteudo">
+                {% if messages %}
+                    <div class="mensagens">
+                        {% for message in messages %}
+                            <div class="alerta alerta-{{ message.tags }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+</body>
+</html>

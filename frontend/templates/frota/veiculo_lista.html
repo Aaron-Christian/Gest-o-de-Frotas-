@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Veículos • Gestão de Frotas{% endblock %}
+{% block page_title %}Veículos{% endblock %}
+
+{% block content %}
+<div class="painel">
+    <div class="cabecalho-secao">
+        <h2>Lista de veículos</h2>
+        <a href="#" class="btn btn-primario btn-desativado" title="Disponível no próximo passo">+ Novo veículo</a>
+    </div>
+
+    <form method="get" class="filtros">
+        <input
+            type="text"
+            name="busca"
+            value="{{ busca }}"
+            placeholder="Buscar por placa, marca ou modelo..."
+        >
+
+        <select name="status">
+            <option value="">Todos os status</option>
+            {% for valor, rotulo in status_opcoes %}
+                <option value="{{ valor }}" {% if status_atual == valor %}selected{% endif %}>
+                    {{ rotulo }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn btn-primario">Filtrar</button>
+
+        {% if busca or status_atual %}
+            <a href="{% url 'veiculo_lista' %}" class="btn btn-secundario">Limpar</a>
+        {% endif %}
+    </form>
+
+    <table class="tabela">
+        <thead>
+            <tr>
+                <th>Placa</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Ano</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for veiculo in veiculos %}
+                <tr>
+                    <td><strong>{{ veiculo.placa }}</strong></td>
+                    <td>{{ veiculo.marca }}</td>
+                    <td>{{ veiculo.modelo }}</td>
+                    <td>{{ veiculo.ano }}</td>
+                    <td>
+                        <span class="badge badge-{{ veiculo.status|lower }}">
+                            {{ veiculo.get_status_display }}
+                        </span>
+                    </td>
+                    <td class="acoes">
+                        <a href="#" class="btn btn-secundario btn-pequeno btn-desativado">Ver</a>
+                        <a href="#" class="btn btn-secundario btn-pequeno btn-desativado">Editar</a>
+                        {% if veiculo.status != "INATIVO" %}
+                            <a href="#" class="btn btn-secundario btn-pequeno btn-desativado">Inativar</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6" class="vazio">Nenhum veículo encontrado.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
