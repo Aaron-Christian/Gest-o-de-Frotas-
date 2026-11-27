@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}{{ titulo }} • Gestão de Frotas{% endblock %}
+{% block page_title %}{{ titulo }}{% endblock %}
+
+{% block content %}
+<div class="painel">
+    <div class="cabecalho-secao">
+        <h2>{{ titulo }}</h2>
+        <a href="{% url 'veiculo_lista' %}" class="btn btn-secundario">Voltar</a>
+    </div>
+
+    <form method="post" class="formulario">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="alerta alerta-error">
+                {% for erro in form.non_field_errors %}
+                    <p>{{ erro }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="grid-form">
+            {% for field in form %}
+                <div class="campo {% if field.name == 'observacoes' %}campo-inteiro{% endif %}">
+                    <label for="{{ field.id_for_label }}">
+                        {{ field.label }}{% if field.field.required %} <span class="obrigatorio">*</span>{% endif %}
+                    </label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="ajuda-campo">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for erro in field.errors %}
+                        <small class="erro-campo">{{ erro }}</small>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="acoes-form">
+            <button type="submit" class="btn btn-primario">{{ botao }}</button>
+            <a href="{% url 'veiculo_lista' %}" class="btn btn-secundario">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

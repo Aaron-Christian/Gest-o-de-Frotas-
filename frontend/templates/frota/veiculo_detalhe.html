@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Veículo {{ veiculo.placa }} • Gestão de Frotas{% endblock %}
+{% block page_title %}Detalhes do veículo{% endblock %}
+
+{% block content %}
+<div class="painel">
+    <div class="cabecalho-secao">
+        <h2>{{ veiculo.placa }} — {{ veiculo.marca }} {{ veiculo.modelo }}</h2>
+        <span class="badge badge-{{ veiculo.status|lower }}">
+            {{ veiculo.get_status_display }}
+        </span>
+    </div>
+
+    <div class="detalhes-grid">
+        <div class="detalhe-item">
+            <span class="detalhe-rotulo">Placa</span>
+            <strong>{{ veiculo.placa }}</strong>
+        </div>
+        <div class="detalhe-item">
+            <span class="detalhe-rotulo">Marca</span>
+            <span>{{ veiculo.marca }}</span>
+        </div>
+        <div class="detalhe-item">
+            <span class="detalhe-rotulo">Modelo</span>
+            <span>{{ veiculo.modelo }}</span>
+        </div>
+        <div class="detalhe-item">
+            <span class="detalhe-rotulo">Ano do modelo</span>
+            <span>{{ veiculo.ano }}</span>
+        </div>
+        <div class="detalhe-item">
+            <span class="detalhe-rotulo">Cor</span>
+            <span>{{ veiculo.cor|default:"—" }}</span>
+        </div>
+        <div class="detalhe-item">
+            <span class="detalhe-rotulo">RENAVAM</span>
+            <span>{{ veiculo.renavam|default:"—" }}</span>
+        </div>
+        <div class="detalhe-item">
+            <span class="detalhe-rotulo">Chassi</span>
+            <span>{{ veiculo.chassi|default:"—" }}</span>
+        </div>
+        <div class="detalhe-item">
+            <span class="detalhe-rotulo">Combustível</span>
+            <span>{{ veiculo.get_combustivel_display|default:"—" }}</span>
+        </div>
+        <div class="detalhe-item">
+            <span class="detalhe-rotulo">Categoria</span>
+            <span>{{ veiculo.get_categoria_display|default:"—" }}</span>
+        </div>
+        <div class="detalhe-item">
+            <span class="detalhe-rotulo">Tipo</span>
+            <span>{{ veiculo.tipo|default:"—" }}</span>
+        </div>
+        <div class="detalhe-item detalhe-inteiro">
+            <span class="detalhe-rotulo">Observações</span>
+            <span>{{ veiculo.observacoes|default:"—" }}</span>
+        </div>
+    </div>
+
+    <div class="acoes-form">
+        <a href="{% url 'veiculo_editar' veiculo.pk %}" class="btn btn-primario">Editar</a>
+        {% if veiculo.status != "INATIVO" %}
+            <form method="post" action="{% url 'veiculo_inativar' veiculo.pk %}" class="form-inline">
+                {% csrf_token %}
+                <button
+                    type="submit"
+                    class="btn btn-perigo"
+                    onclick="return confirm('Deseja realmente inativar o veículo {{ veiculo.placa }}?')"
+                >
+                    Inativar
+                </button>
+            </form>
+        {% endif %}
+        <a href="{% url 'veiculo_lista' %}" class="btn btn-secundario">Voltar para lista</a>
+    </div>
+</div>
+{% endblock %}

@@ -7,7 +7,7 @@
 <div class="painel">
     <div class="cabecalho-secao">
         <h2>Lista de veículos</h2>
-        <a href="#" class="btn btn-primario btn-desativado" title="Disponível no próximo passo">+ Novo veículo</a>
+        <a href="{% url 'veiculo_criar' %}" class="btn btn-primario">+ Novo veículo</a>
     </div>
 
     <form method="get" class="filtros">
@@ -58,10 +58,19 @@
                         </span>
                     </td>
                     <td class="acoes">
-                        <a href="#" class="btn btn-secundario btn-pequeno btn-desativado">Ver</a>
-                        <a href="#" class="btn btn-secundario btn-pequeno btn-desativado">Editar</a>
+                        <a href="{% url 'veiculo_detalhe' veiculo.pk %}" class="btn btn-secundario btn-pequeno">Ver</a>
+                        <a href="{% url 'veiculo_editar' veiculo.pk %}" class="btn btn-secundario btn-pequeno">Editar</a>
                         {% if veiculo.status != "INATIVO" %}
-                            <a href="#" class="btn btn-secundario btn-pequeno btn-desativado">Inativar</a>
+                            <form method="post" action="{% url 'veiculo_inativar' veiculo.pk %}" class="form-inline">
+                                {% csrf_token %}
+                                <button
+                                    type="submit"
+                                    class="btn btn-perigo btn-pequeno"
+                                    onclick="return confirm('Deseja realmente inativar o veículo {{ veiculo.placa }}?')"
+                                >
+                                    Inativar
+                                </button>
+                            </form>
                         {% endif %}
                     </td>
                 </tr>

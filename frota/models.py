@@ -7,16 +7,49 @@ class Veiculo(models.Model):
         EM_MANUTENCAO = "EM_MANUTENCAO", "Em manutenção"
         INATIVO = "INATIVO", "Inativo"
 
+    class Combustivel(models.TextChoices):
+        FLEX = "FLEX", "Flex"
+        GASOLINA = "GASOLINA", "Gasolina"
+        ETANOL = "ETANOL", "Etanol"
+        DIESEL = "DIESEL", "Diesel"
+        ELETRICO = "ELETRICO", "Elétrico"
+        HIBRIDO = "HIBRIDO", "Híbrido"
+
+    class Categoria(models.TextChoices):
+        LEVE = "LEVE", "Leve"
+        UTILITARIO = "UTILITARIO", "Utilitário"
+        PESADO = "PESADO", "Pesado"
+        MOTO = "MOTO", "Moto"
+
     placa = models.CharField("placa", max_length=10, unique=True)
     marca = models.CharField("marca", max_length=50)
     modelo = models.CharField("modelo", max_length=50)
     ano = models.PositiveSmallIntegerField("ano do modelo")
+    cor = models.CharField("cor", max_length=30, blank=True, default="")
+    renavam = models.CharField("RENAVAM", max_length=20, blank=True, default="")
+    chassi = models.CharField("chassi", max_length=30, blank=True, default="")
+    combustivel = models.CharField(
+        "combustível",
+        max_length=15,
+        choices=Combustivel.choices,
+        blank=True,
+        default="",
+    )
+    categoria = models.CharField(
+        "categoria",
+        max_length=15,
+        choices=Categoria.choices,
+        blank=True,
+        default="",
+    )
+    tipo = models.CharField("tipo", max_length=30, blank=True, default="")
     status = models.CharField(
         "status",
         max_length=20,
         choices=Status.choices,
         default=Status.ATIVO,
     )
+    observacoes = models.TextField("observações", blank=True, default="")
 
     class Meta:
         verbose_name = "veículo"
